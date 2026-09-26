@@ -1,0 +1,25 @@
+# dataset (licensed, ~750 MB) and archives
+Placenta accreta spectrum disorders(PASDs)/
+*.zip
+*.rar
+
+# derived data, figures, model outputs
+data/
+runs/
+checkpoints/
+*.pt
+*.pth
+*.png
+*.jpg
+
+# professor / lab documents (not ours to publish)
+PAS Project/
+*.docx
+*.pptx
+*.pdf
+
+# python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
