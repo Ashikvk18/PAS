@@ -54,7 +54,7 @@ Every step gets a status: ✅ done · ❌ failed · ⏳ in progress · ⬜ not s
 | 4.1 | Understand DenseNet-121 architecture (dense blocks, transitions) | ✅ | Walked through: 4 dense blocks (6/12/24/16 layers), growth rate 32, concatenation not replacement, transitions do all downsampling. Skip taps at 1/2, 1/4, 1/8, 1/16, 1/32 |
 | 4.2 | Build DenseNet-121-encoder U-Net | ✅ | `src/model.py` `DenseUNet`. ImageNet-pretrained encoder (7.0M) + decoder (15.7M) = 22.6M. In (2,3,512,512) → out (2,1,512,512) logits. Train step batch 2 = 2.5 GB VRAM → batch 6 should fit in 8 GB |
 | 4.3 | Add dropout for MC-Dropout uncertainty | ✅ | `Dropout2d(0.2)` in every decoder block; `enable_mc_dropout()` keeps them stochastic at inference. Verified two passes differ |
-| 4.4 | Short smoke-test training (1–2 epochs) | ⬜ | |
+| 4.4 | Short smoke-test training (1–2 epochs) | ✅ | `src/train.py` (BCE+Dice, AdamW, encoder LR ×0.1, cosine, bf16 autocast). 2 epochs, batch 6, ~3.4 min/epoch. **Val Dice 0.817 → 0.838.** Visual check `runs/smoke/_val_preds.png`: 5/6 good; `v027 s41` fails (Dice 0.25) with visibly low-confidence output → early preview of RQ1 |
 | 4.5 | Full training on ssh_TSE | ⬜ | |
 | 4.6 | Evaluate Dice on held-out test patients | ⬜ | |
 
