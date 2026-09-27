@@ -55,7 +55,7 @@ Every step gets a status: ✅ done · ❌ failed · ⏳ in progress · ⬜ not s
 | 4.2 | Build DenseNet-121-encoder U-Net | ✅ | `src/model.py` `DenseUNet`. ImageNet-pretrained encoder (7.0M) + decoder (15.7M) = 22.6M. In (2,3,512,512) → out (2,1,512,512) logits. Train step batch 2 = 2.5 GB VRAM → batch 6 should fit in 8 GB |
 | 4.3 | Add dropout for MC-Dropout uncertainty | ✅ | `Dropout2d(0.2)` in every decoder block; `enable_mc_dropout()` keeps them stochastic at inference. Verified two passes differ |
 | 4.4 | Short smoke-test training (1–2 epochs) | ✅ | `src/train.py` (BCE+Dice, AdamW, encoder LR ×0.1, cosine, bf16 autocast). 2 epochs, batch 6, ~3.4 min/epoch. **Val Dice 0.817 → 0.838.** Visual check `runs/smoke/_val_preds.png`: 5/6 good; `v027 s41` fails (Dice 0.25) with visibly low-confidence output → early preview of RQ1 |
-| 4.5 | Full training on ssh_TSE | ⬜ | |
+| 4.5 | Full training on ssh_TSE | ⏳ | Run `full_ssh_tse`, 30 epochs, started Sep 27. Epoch 1 val Dice 0.820. **Power: set plugged-in sleep → never, display → 30 min for the run. RESTORE after: `powercfg /change standby-timeout-ac 5; powercfg /change monitor-timeout-ac 5`** |
 | 4.6 | Evaluate Dice on held-out test patients | ⬜ | |
 
 ## Phase 5 — Uncertainty analysis (RQ1)
