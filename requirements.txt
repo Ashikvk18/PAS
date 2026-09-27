@@ -6,6 +6,5 @@ matplotlib>=3.10
 pillow>=11.3
 opencv-python>=4.13
 tqdm>=4.67
-# install torch/torchvision with CUDA from https://pytorch.org (used: torch 2.11.0+cu128, torchvision 0.26.0)
 torch>=2.7
 torchvision>=0.22
