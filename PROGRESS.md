@@ -56,13 +56,13 @@ Every step gets a status: ✅ done · ❌ failed · ⏳ in progress · ⬜ not s
 | 4.3 | Add dropout for MC-Dropout uncertainty | ✅ | `Dropout2d(0.2)` in every decoder block; `enable_mc_dropout()` keeps them stochastic at inference. Verified two passes differ |
 | 4.4 | Short smoke-test training (1–2 epochs) | ✅ | `src/train.py` (BCE+Dice, AdamW, encoder LR ×0.1, cosine, bf16 autocast). 2 epochs, batch 6, ~3.4 min/epoch. **Val Dice 0.817 → 0.838.** Visual check `runs/smoke/_val_preds.png`: 5/6 good; `v027 s41` fails (Dice 0.25) with visibly low-confidence output → early preview of RQ1 |
 | 4.5 | Full training on ssh_TSE | ✅ | Run `full_ssh_tse`, 30 epochs, ~4 min/epoch. **Best val Dice 0.871 @ epoch 12** → `checkpoints/full_ssh_tse_best.pt`. Val plateaued ~0.87 from epoch 12 while train reached 0.954 (mild overfit; best-epoch checkpoint kept). Power settings restored to original (sleep 5 min, display 5 min) |
-| 4.6 | Evaluate Dice on held-out test patients | ⬜ | |
+| 4.6 | Evaluate Dice on held-out test patients | ✅ | `src/predict.py` → `runs/full_ssh_tse/pred_test_ssh_TSE/` (slices.csv, pixels.parquet, maps.npz). 558 slices / 20 pts. **Test Dice: mean 0.865, median 0.893**, patient-level 0.865. `sub` 0.865 vs `v` 0.866 — no cohort gap. 5 slices Dice<0.5, 38 <0.7. Worst patients: sub050 (0.72), sub090 (0.75), sub099 (0.78), v006 (0.79) |
 
 ## Phase 5 — Uncertainty analysis (RQ1)
 
 | # | Step | Status | Notes |
 |---|------|--------|-------|
-| 5.1 | Per-pixel confidence maps + MC-Dropout variance | ⬜ | |
+| 5.1 | Per-pixel confidence maps + MC-Dropout variance | ✅ | 20 MC-dropout passes per slice; 4,000 sampled pixels/slice (2.23 M) with prob, correct, mc_std, boundary distance. **Early findings:** whole-slice mean confidence ≈ 0.996 even on Dice-0 slices (background dominates → uninformative, the segmentation analogue of Zhang's overconfidence). MC-std lights up only at the *edges of what was predicted*; missed placenta regions show ~zero uncertainty = confident false negatives. Boundary-band confidence correlates −0.63 with Dice |
 | 5.2 | Reliability diagram (pixel confidence vs accuracy) + ECE | ⬜ | |
 | 5.3 | Confidence histograms (correct vs incorrect) | ⬜ | |
 | 5.4 | Gallery: high-confidence errors | ⬜ | |
