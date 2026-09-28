@@ -63,7 +63,7 @@ Every step gets a status: ✅ done · ❌ failed · ⏳ in progress · ⬜ not s
 | # | Step | Status | Notes |
 |---|------|--------|-------|
 | 5.1 | Per-pixel confidence maps + MC-Dropout variance | ✅ | 20 MC-dropout passes per slice; 4,000 sampled pixels/slice (2.23 M) with prob, correct, mc_std, boundary distance. **Early findings:** whole-slice mean confidence ≈ 0.996 even on Dice-0 slices (background dominates → uninformative, the segmentation analogue of Zhang's overconfidence). MC-std lights up only at the *edges of what was predicted*; missed placenta regions show ~zero uncertainty = confident false negatives. Boundary-band confidence correlates −0.63 with Dice. **Integrity check (14 assertions) passed**: 558 rows = test frame, 20 test pts, no leakage, maps↔csv↔disk aligned, Dice recomputed from maps matches (Δ<0.001). `sub050 s24` (Dice 0) inspected: GT looks plausible — it is the **last slice of the volume**, thin placenta behind fetal head → genuine hard case, candidate "edge-of-volume" pattern |
-| 5.2 | Reliability diagram (pixel confidence vs accuracy) + ECE | ⬜ | |
+| 5.2 | Reliability diagram (pixel confidence vs accuracy) + ECE | ✅ | `src/analysis/calibration.py` → `fig_reliability.png`, `calibration_summary.csv`. **ECE: all pixels 0.011 (looks perfect, background-dominated) · placenta pixels 0.100 · boundary band ±5 px 0.197.** At ≥99% confidence, boundary accuracy is only 82.8%. Every bin below 0.95 sits 15–25 pts under the diagonal → systematic overconfidence hidden by the background |
 | 5.3 | Confidence histograms (correct vs incorrect) | ⬜ | |
 | 5.4 | Gallery: high-confidence errors | ⬜ | |
 | 5.5 | Gallery: low-confidence correct | ⬜ | |
