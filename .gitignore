@@ -11,6 +11,7 @@ checkpoints/
 *.pth
 *.png
 *.jpg
+!poster/*.png
 
 # professor / lab documents (not ours to publish)
 PAS Project/
